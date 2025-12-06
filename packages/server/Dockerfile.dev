@@ -3,7 +3,7 @@ FROM oven/bun:1
 WORKDIR /app
 
 # Copy root package files for workspace support
-COPY package.json bun.lockb* ./
+COPY package.json bun.lock* ./
 
 # Copy server package files
 COPY packages/server/package.json ./packages/server/

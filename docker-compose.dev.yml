@@ -1,4 +1,21 @@
 services:
+  mongodb:
+    image: mongo:7
+    container_name: new-infra-test-mongodb-dev
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data-dev:/data/db
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
   server:
     build:
       context: .
@@ -11,12 +28,15 @@ services:
       - ./packages/server/src:/app/packages/server/src
       - ./packages/server/package.json:/app/packages/server/package.json
       - ./packages/server/tsconfig.json:/app/packages/server/tsconfig.json
-      # Mount node_modules to prevent host/container conflicts
-      - server-node-modules:/app/packages/server/node_modules
-      - root-node-modules:/app/node_modules
+      # Mount root package.json for workspace configuration
+      - ./package.json:/app/package.json
     environment:
       - NODE_ENV=development
       - PORT=3001
+      - MONGODB_URI=mongodb://mongodb:27017/counter
+    depends_on:
+      mongodb:
+        condition: service_healthy
     networks:
       - app-network
 
@@ -50,8 +70,8 @@ services:
 
 volumes:
   client-node-modules:
-  server-node-modules:
   root-node-modules:
+  mongodb-data-dev:
 
 networks:
   app-network:

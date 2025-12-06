@@ -13,7 +13,8 @@
     "dockploy": "sh -c 'source .env && open ${DOCKPLOY_DASHBOARD_URL}'",
     "dockploy:docs": "open https://docs.dokploy.com/docs/core",
     "dns": "sh -c 'source .env && open ${DNS_SETTINGS_URL}'",
-    "vps": "sh -c 'source .env && open ${VPS_DASHBOARD_URL}'"
+    "vps": "sh -c 'source .env && open ${VPS_DASHBOARD_URL}'",
+    "open": "sh -c 'source .env && open ${APPLICATION_URL}'"
   }
 }
 

@@ -16,7 +16,7 @@ This is a test project for the new infrastructure of whistleservice. It will use
 
 - ✅ setup a monorepo
 - ✅ setup a simple app with react, vite and bun.
-- ⏳ deploy the app
+- ✅ deploy the app
 - ⏳ setup a deployment pipeline
 - ⏳ setup a domain with subdomain routing.
 - ⏳ setup a simple server with bun and express.
@@ -32,3 +32,5 @@ This is a test project for the new infrastructure of whistleservice. It will use
 3. Create user
 4. Create DNS `A Record` from the vps ip (159.69.209.121) to ws-dev.dk
 5. Setup domain in dockploy with SSL
+6. Connect to github
+7. Create a new project of you compose and follow the wizard

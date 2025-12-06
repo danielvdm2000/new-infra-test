@@ -10,7 +10,6 @@ To start the project in production mode, run:
 docker compose up --build
 ```
 
-
 ## TODO
 This is a test project for the new infrastructure of whistleservice. It will use a vps from hetzner with dockploy.
 
@@ -34,3 +33,9 @@ This is a test project for the new infrastructure of whistleservice. It will use
 5. Setup domain in dockploy with SSL
 6. Connect to github
 7. Create a new project of you compose and follow the wizard
+
+## DNS
+Use `nslookup ws-dev.dk` to see if the domain has been connected to the IP of the VPS 
+
+### Settings
+- `A Record` ws-dev.dk -> 159.69.209.121

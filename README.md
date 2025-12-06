@@ -20,7 +20,7 @@ note: docker should be running
 - ⏳ Get the deployed app running on ws-dev.dk
 - ⏳ setup a domain with subdomain routing.
 - ✅ setup a simple server with bun and express.
-- ⏳ setup a mongodb database
+- ✅ setup a mongodb database
 - ⏳ setup backups
 - ⏳ setup a react, vite, bun project with serverside rendering and subdomain routing.
 - ⏳ setup a shared ui project with hot-reloading and typesafety.

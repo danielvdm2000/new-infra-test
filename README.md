@@ -17,7 +17,7 @@ This is a test project for the new infrastructure of whistleservice. It will use
 - ✅ setup a monorepo
 - ✅ setup a simple app with react, vite and bun.
 - ✅ deploy the app
-- ⏳ setup a deployment pipeline
+- ✅ setup a deployment pipeline (taken care of by dockploy - and it is super fast on push to main no more than a few seconds)
 - ⏳ setup a domain with subdomain routing.
 - ⏳ setup a simple server with bun and express.
 - ⏳ setup a mongodb database

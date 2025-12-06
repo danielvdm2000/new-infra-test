@@ -1,5 +1,17 @@
-TODO
+## Run the project
 
+To start the project in development mode, run:
+```
+docker compose -f docker-compose.dev.yml up --build
+```
+
+To start the project in production mode, run:
+```
+docker compose up --build
+```
+
+
+## TODO
 This is a test project for the new infrastructure of whistleservice. It will use a vps from hetzner with dockploy.
 
 - ✅ setup a monorepo
@@ -14,7 +26,7 @@ This is a test project for the new infrastructure of whistleservice. It will use
 - ⏳ setup a shared ui project with hot-reloading and typesafety.
 - ⏳ setup a s3 compatible object storage. 
 
-Setup of VPS
+## Setup of VPS
 1. Install dockploy (`curl -sSL https://dokploy.com/install.sh | sh`)
 2. Open 159.69.209.121:3000
 3. Create user

@@ -1,0 +1,35 @@
+services:
+  client:
+    build:
+      context: .
+      dockerfile: ./packages/client/Dockerfile
+      target: dev
+    container_name: new-infra-test-client-dev
+    ports:
+      - "8080:5173"
+    volumes:
+      # Mount source code for hot-reload
+      - ./packages/client/src:/app/packages/client/src
+      - ./packages/client/public:/app/packages/client/public
+      - ./packages/client/index.html:/app/packages/client/index.html
+      - ./packages/client/vite.config.ts:/app/packages/client/vite.config.ts
+      - ./packages/client/tsconfig.json:/app/packages/client/tsconfig.json
+      - ./packages/client/tsconfig.app.json:/app/packages/client/tsconfig.app.json
+      - ./packages/client/tsconfig.node.json:/app/packages/client/tsconfig.node.json
+      - ./packages/client/package.json:/app/packages/client/package.json
+      # Mount node_modules to prevent host/container conflicts
+      - client-node-modules:/app/packages/client/node_modules
+      - root-node-modules:/app/node_modules
+    environment:
+      - NODE_ENV=development
+    networks:
+      - app-network
+
+volumes:
+  client-node-modules:
+  root-node-modules:
+
+networks:
+  app-network:
+    driver: bridge
+

@@ -3,7 +3,7 @@ TODO
 This is a test project for the new infrastructure of whistleservice. It will use a vps from hetzner with dockploy.
 
 - ✅ setup a monorepo
-- ⏳ setup a simple app with react, vite and bun.
+- ✅ setup a simple app with react, vite and bun.
 - ⏳ deploy the app
 - ⏳ setup a deployment pipeline
 - ⏳ setup a domain with subdomain routing.

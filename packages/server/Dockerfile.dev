@@ -1,0 +1,26 @@
+# Development Dockerfile
+FROM oven/bun:1
+WORKDIR /app
+
+# Copy root package files for workspace support
+COPY package.json bun.lockb* ./
+
+# Copy server package files
+COPY packages/server/package.json ./packages/server/
+COPY packages/server/tsconfig.json ./packages/server/
+
+# Install all dependencies (including devDependencies for TypeScript, etc.)
+RUN bun install
+
+# Copy server source code (will be overridden by volume mount in dev)
+COPY packages/server/src ./packages/server/src
+
+# Set working directory to server
+WORKDIR /app/packages/server
+
+# Expose server port
+EXPOSE 3001
+
+# Run dev server with watch mode
+CMD ["bun", "run", "dev"]
+

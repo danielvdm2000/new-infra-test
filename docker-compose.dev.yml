@@ -1,4 +1,25 @@
 services:
+  server:
+    build:
+      context: .
+      dockerfile: ./packages/server/Dockerfile.dev
+    container_name: new-infra-test-server-dev
+    ports:
+      - "3001:3001"
+    volumes:
+      # Mount source code for hot-reload
+      - ./packages/server/src:/app/packages/server/src
+      - ./packages/server/package.json:/app/packages/server/package.json
+      - ./packages/server/tsconfig.json:/app/packages/server/tsconfig.json
+      # Mount node_modules to prevent host/container conflicts
+      - server-node-modules:/app/packages/server/node_modules
+      - root-node-modules:/app/node_modules
+    environment:
+      - NODE_ENV=development
+      - PORT=3001
+    networks:
+      - app-network
+
   client:
     build:
       context: .
@@ -22,11 +43,14 @@ services:
       - root-node-modules:/app/node_modules
     environment:
       - NODE_ENV=development
+    depends_on:
+      - server
     networks:
       - app-network
 
 volumes:
   client-node-modules:
+  server-node-modules:
   root-node-modules:
 
 networks:

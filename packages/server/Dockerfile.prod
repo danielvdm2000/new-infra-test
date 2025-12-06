@@ -1,0 +1,60 @@
+# Production Dockerfile
+FROM oven/bun:1 AS builder
+WORKDIR /app
+
+# Copy root package files for workspace support
+COPY package.json bun.lockb* ./
+
+# Copy server package files
+COPY packages/server/package.json ./packages/server/
+COPY packages/server/tsconfig.json ./packages/server/
+
+# Install all dependencies (needed for TypeScript compilation)
+RUN bun install
+
+# Copy server source code
+COPY packages/server/src ./packages/server/src
+
+# Build/transpile TypeScript to JavaScript
+WORKDIR /app/packages/server
+RUN bun build src/index.ts --outdir dist --target node
+
+# Production dependencies stage
+FROM oven/bun:1 AS prod-deps
+WORKDIR /app
+
+# Copy root package files (without lockfile to allow fresh install)
+COPY package.json ./
+
+# Copy server package.json
+COPY packages/server/package.json ./packages/server/
+
+# Install only production dependencies (will create new lockfile)
+RUN bun install --production
+
+# Production stage
+FROM oven/bun:1
+WORKDIR /app
+
+# Copy root package files
+COPY package.json bun.lockb* ./
+
+# Copy server package.json
+COPY packages/server/package.json ./packages/server/
+
+# Copy production node_modules from prod-deps stage
+COPY --from=prod-deps /app/node_modules ./node_modules
+COPY --from=prod-deps /app/packages/server/node_modules ./packages/server/node_modules
+
+# Copy transpiled JavaScript from builder
+COPY --from=builder /app/packages/server/dist ./packages/server/dist
+
+# Set working directory to server
+WORKDIR /app/packages/server
+
+# Expose server port
+EXPOSE 3001
+
+# Run the transpiled JavaScript instead of TypeScript
+CMD ["bun", "dist/index.js"]
+

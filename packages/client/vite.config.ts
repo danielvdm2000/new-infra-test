@@ -7,5 +7,12 @@ export default defineConfig({
   server: {
     host: true,
     port: 8080,
+    proxy: {
+      '/api': {
+        // In Docker Compose, use service name 'server'; for local dev, use localhost
+        target: process.env.API_URL || 'http://server:3001',
+        changeOrigin: true,
+      },
+    },
   },
 })

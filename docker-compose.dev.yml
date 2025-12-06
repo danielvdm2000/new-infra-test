@@ -6,7 +6,7 @@ services:
       target: dev
     container_name: new-infra-test-client-dev
     ports:
-      - "8080:5173"
+      - "8080:8080"
     volumes:
       # Mount source code for hot-reload
       - ./packages/client/src:/app/packages/client/src

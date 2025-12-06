@@ -1,18 +1,18 @@
-## Run the project
+# new infrastructure test
+I need a more efficient infrastructure setup for containerized deployments without vendor lock in.
+
+This is my playground for creating create such a setup.
+
+### Run the project
 
 To start the project in development mode, run:
 ```
-docker compose -f docker-compose.dev.yml up --build
+bun run dev
 ```
 
-To start the project in production mode, run:
-```
-docker compose up --build
-```
+note: docker should be running
 
-## TODO
-This is a test project for the new infrastructure of whistleservice. It will use a vps from hetzner with dockploy.
-
+### TODO
 - ✅ setup a monorepo
 - ✅ setup a simple app with react, vite and bun.
 - ✅ deploy the app
@@ -26,17 +26,14 @@ This is a test project for the new infrastructure of whistleservice. It will use
 - ⏳ setup a shared ui project with hot-reloading and typesafety.
 - ⏳ setup a s3 compatible object storage. 
 
-## Setup of VPS
+### Setup of VPS
+
 1. Install dockploy (`curl -sSL https://dokploy.com/install.sh | sh`)
-2. Open 159.69.209.121:3000
+2. Open server-id:3000
 3. Create user
-4. Create DNS `A Record` from the vps ip (159.69.209.121) to ws-dev.dk
+4. Create DNS `A Record` from the vps ip (server-ip) to ws-dev.dk
 5. Setup domain in dockploy with SSL
 6. Connect to github
 7. Create a new project of you compose and follow the wizard
 
-## DNS
-Use `nslookup ws-dev.dk` to see if the domain has been connected to the IP of the VPS 
 
-### Settings
-- `A Record` ws-dev.dk -> 159.69.209.121

@@ -36,6 +36,9 @@ RUN bun install --production
 FROM oven/bun:1
 WORKDIR /app
 
+# Install curl for healthchecks
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
 # Copy root package files
 COPY package.json bun.lock* ./
 

@@ -1,0 +1,8 @@
+{
+  "name": "new-infra-test",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ]
+}
+

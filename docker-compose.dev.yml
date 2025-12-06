@@ -40,37 +40,33 @@ services:
     networks:
       - app-network
 
-  client:
+  app:
     build:
       context: .
-      dockerfile: ./packages/client/Dockerfile
-      target: dev
-    container_name: new-infra-test-client-dev
+      dockerfile: ./packages/app/Dockerfile.dev
+    container_name: new-infra-test-app-dev
     ports:
       - "8080:8080"
     volumes:
       # Mount source code for hot-reload
-      - ./packages/client/src:/app/packages/client/src
-      - ./packages/client/public:/app/packages/client/public
-      - ./packages/client/index.html:/app/packages/client/index.html
-      - ./packages/client/vite.config.ts:/app/packages/client/vite.config.ts
-      - ./packages/client/tsconfig.json:/app/packages/client/tsconfig.json
-      - ./packages/client/tsconfig.app.json:/app/packages/client/tsconfig.app.json
-      - ./packages/client/tsconfig.node.json:/app/packages/client/tsconfig.node.json
-      - ./packages/client/package.json:/app/packages/client/package.json
-      # Mount node_modules to prevent host/container conflicts
-      - client-node-modules:/app/packages/client/node_modules
-      - root-node-modules:/app/node_modules
+      - ./packages/app/src:/app/packages/app/src
+      - ./packages/app/package.json:/app/packages/app/package.json
+      - ./packages/app/tsconfig.json:/app/packages/app/tsconfig.json
+      - ./packages/app/build.ts:/app/packages/app/build.ts
+      - ./packages/app/bunfig.toml:/app/packages/app/bunfig.toml
+      - ./packages/app/components.json:/app/packages/app/components.json
+      # Mount root package.json for workspace configuration
+      - ./package.json:/app/package.json
     environment:
       - NODE_ENV=development
+      - PORT=8080
+      - API_URL=http://server:3001
     depends_on:
       - server
     networks:
       - app-network
 
 volumes:
-  client-node-modules:
-  root-node-modules:
   mongodb-data-dev:
 
 networks:

@@ -12,6 +12,23 @@ bun run dev
 
 note: docker should be running
 
+### Troubleshooting
+
+#### Missing node_modules error (ENOENT reading node_modules)
+
+If you encounter an error like `error: ENOENT reading "/app/packages/app/node_modules/bun-plugin-tailwind"`, this typically happens when Docker named volumes override the `node_modules` installed during the Docker build.
+
+**Solution:** Remove any named volumes for `node_modules` from your `docker-compose.dev.yml`. The dependencies installed during the Docker build (`RUN bun install`) will be used instead. Named volumes for `node_modules` are only needed if you want to share dependencies between host and container, but they will override the installed dependencies if the volume is empty.
+
+**Example of what to remove:**
+```yaml
+volumes:
+  - app-node-modules:/app/packages/app/node_modules
+  - root-node-modules:/app/node_modules
+```
+
+The `server` package in this project demonstrates the correct setup - it doesn't use named volumes for `node_modules` and relies on the dependencies installed during the Docker build.
+
 ### TODO
 - ✅ setup a monorepo
 - ✅ setup a simple app with react, vite and bun.

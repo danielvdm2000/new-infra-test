@@ -54,9 +54,3 @@ logs
 
 # Misc
 .eslintcache
-
-# Keep only client and server packages for build (exclude other packages)
-packages/*
-!packages/client
-!packages/server
-

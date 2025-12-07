@@ -2,13 +2,8 @@ import { App } from "@/App";
 import { renderToReadableStream } from "react-dom/server";
 import { join } from "path";
 
-// Read the HTML template file from dist directory
-const htmlPath = join(process.cwd(), "dist", "index.html");
-const htmlFile = Bun.file(htmlPath);
-const html = await htmlFile.text();
-const [beforeRoot, afterRoot] = html.split('<div id="root"></div>');
-
 export async function ssr() {
+  const { beforeRoot, afterRoot } = await loadHtmlTemplate();
   const stream = await renderToReadableStream(<App />);
 
   // Create encoder for text chunks
@@ -53,4 +48,15 @@ export async function ssr() {
   return new Response(combinedStream, {
     headers: { "Content-Type": "text/html" },
   });
+}
+
+let htmlTemplate: { beforeRoot: string; afterRoot: string } | null = null;
+
+async function loadHtmlTemplate() {
+  if (htmlTemplate) return htmlTemplate;
+  const htmlPath = join(process.cwd(), "dist", "index.html");
+  const htmlFile = Bun.file(htmlPath);
+  const html = await htmlFile.text();
+  const [beforeRoot, afterRoot] = html.split('<div id="root"></div>');
+  return { beforeRoot, afterRoot };
 }

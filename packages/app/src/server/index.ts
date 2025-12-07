@@ -1,5 +1,4 @@
 import { serve } from "bun";
-import index from "../index.html";
 import { serveStaticFile } from "./serve-static-files";
 import { apiRoutes } from "./api-routes";
 
@@ -25,6 +24,8 @@ export async function startServer() {
 
     console.log(`🚀 Server running at ${server.url}`);
   } else {
+    const { default: index } = await import("../index.html");
+
     // Development mode: use Bun's HTML import feature with routes
     const server = serve({
       port: process.env.PORT ? parseInt(process.env.PORT) : 8080,

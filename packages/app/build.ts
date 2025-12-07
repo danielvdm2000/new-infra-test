@@ -122,7 +122,8 @@ const entrypoints = [...new Bun.Glob("**.html").scanSync("src")]
   .filter(dir => !dir.includes("node_modules"));
 console.log(`📄 Found ${entrypoints.length} HTML ${entrypoints.length === 1 ? "file" : "files"} to process\n`);
 
-const result = await Bun.build({
+// Build client bundle
+const clientResult = await Bun.build({
   entrypoints,
   outdir,
   plugins: [plugin],
@@ -135,9 +136,23 @@ const result = await Bun.build({
   ...cliConfig,
 });
 
+// Build server bundle for production
+const serverEntrypoint = path.resolve("src/index.ts");
+const serverResult = await Bun.build({
+  entrypoints: [serverEntrypoint],
+  outdir,
+  target: "bun",
+  minify: true,
+  define: {
+    "process.env.NODE_ENV": JSON.stringify("production"),
+  },
+});
+
 const end = performance.now();
 
-const outputTable = result.outputs.map(output => ({
+// Combine outputs from both builds
+const allOutputs = [...clientResult.outputs, ...serverResult.outputs];
+const outputTable = allOutputs.map(output => ({
   File: path.relative(process.cwd(), output.path),
   Type: output.kind,
   Size: formatFileSize(output.size),

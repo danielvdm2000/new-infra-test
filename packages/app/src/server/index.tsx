@@ -1,6 +1,7 @@
 import { serve } from "bun";
-import { serveStaticFile } from "./serve-static-files";
+import { serveStaticFile } from "./utils/serve-static-files";
 import { apiRoutes } from "./api-routes";
+import { ssr } from "./ssr";
 
 export async function startServer() {
   const isProduction = process.env.NODE_ENV === "production";
@@ -15,6 +16,9 @@ export async function startServer() {
         "/*": async (req: Request & { url: string }) => {
           const url = new URL(req.url);
           const pathname = url.pathname;
+
+          if (pathname === "/") return ssr();
+
           const staticResponse = await serveStaticFile(pathname);
           if (staticResponse) return staticResponse;
           return new Response("Not found", { status: 404 });

@@ -1,10 +1,19 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { APITester } from "./APITester";
 import { Counter } from "./Counter";
 import "./index.css";
 
 import logo from "./logo.svg";
 import reactLogo from "./react.svg";
+
+function getStaticData() {
+  return {
+    name: "John Doe",
+    email: "john.doe@example.com",
+    phone: "1234567890",
+  }
+}
+
+const staticData = getStaticData();
 
 export function App() {
   return (
@@ -31,7 +40,9 @@ export function App() {
         </CardHeader>
         <CardContent className="flex flex-col gap-6">
           <Counter />
-          <APITester />
+          <div className="text-left">
+            <pre className="bg-muted/50 border rounded-lg p-4 text-sm font-mono overflow-x-auto">{JSON.stringify(staticData, null, 2)}</pre>
+          </div>
         </CardContent>
       </Card>
     </div>

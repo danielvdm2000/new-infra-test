@@ -6,7 +6,7 @@
  */
 
 import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
+import { createRoot, hydrateRoot } from "react-dom/client";
 import { App } from "./App";
 
 const elem = document.getElementById("root")!;
@@ -17,10 +17,10 @@ const app = (
 );
 
 if (import.meta.hot) {
-  // With hot module reloading, `import.meta.hot.data` is persisted.
+  // Development: use createRoot with HMR
   const root = (import.meta.hot.data.root ??= createRoot(elem));
   root.render(app);
 } else {
-  // The hot module reloading API is not available in production.
-  createRoot(elem).render(app);
+  // Production: hydrate server-rendered content
+  hydrateRoot(elem, app);
 }

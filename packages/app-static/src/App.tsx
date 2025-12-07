@@ -1,5 +1,4 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { APITester } from "./APITester";
 import { Counter } from "./Counter";
 import "./index.css";
 
@@ -31,7 +30,6 @@ export function App() {
         </CardHeader>
         <CardContent className="flex flex-col gap-6">
           <Counter />
-          <APITester />
         </CardContent>
       </Card>
     </div>

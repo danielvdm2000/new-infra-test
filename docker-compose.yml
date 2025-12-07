@@ -68,10 +68,10 @@ services:
       dockerfile: ./packages/app-static/Dockerfile.prod
     container_name: new-infra-test-app-static-prod
     ports:
-      - "8081:8081"
+      - "8081:80"
     restart: unless-stopped
     environment:
-      - PORT=8081
+      - PORT=80
       - NODE_ENV=production
       - API_URL=http://server:3001
     depends_on:
@@ -79,7 +79,7 @@ services:
     networks:
       - app-network
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8081/ || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://localhost:80/ || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3

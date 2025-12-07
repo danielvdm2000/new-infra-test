@@ -66,6 +66,32 @@ services:
     networks:
       - app-network
 
+  app-static:
+    build:
+      context: .
+      dockerfile: ./packages/app-static/Dockerfile.dev
+    container_name: new-infra-test-app-static-dev
+    ports:
+      - "8081:8081"
+    volumes:
+      # Mount source code for hot-reload
+      - ./packages/app-static/src:/app/packages/app-static/src
+      - ./packages/app-static/package.json:/app/packages/app-static/package.json
+      - ./packages/app-static/tsconfig.json:/app/packages/app-static/tsconfig.json
+      - ./packages/app-static/build.ts:/app/packages/app-static/build.ts
+      - ./packages/app-static/bunfig.toml:/app/packages/app-static/bunfig.toml
+      - ./packages/app-static/components.json:/app/packages/app-static/components.json
+      # Mount root package.json for workspace configuration
+      - ./package.json:/app/package.json
+    environment:
+      - NODE_ENV=development
+      - PORT=8081
+      - API_URL=http://server:3001
+    depends_on:
+      - server
+    networks:
+      - app-network
+
 volumes:
   mongodb-data-dev:
 

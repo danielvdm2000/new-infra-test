@@ -1,0 +1,32 @@
+# Development Dockerfile
+FROM oven/bun:1
+WORKDIR /app
+
+# Copy root package files for workspace support
+COPY package.json bun.lock* ./
+
+# Copy app-static package files
+COPY packages/app-static/package.json ./packages/app-static/
+COPY packages/app-static/tsconfig.json ./packages/app-static/
+COPY packages/app-static/bunfig.toml ./packages/app-static/
+
+# Install all dependencies (including devDependencies for TypeScript, etc.)
+RUN bun install
+
+# Copy app-static source code (will be overridden by volume mount in dev)
+# Only copy specific files/directories to avoid overwriting node_modules
+COPY packages/app-static/src ./packages/app-static/src
+COPY packages/app-static/build.ts ./packages/app-static/build.ts
+COPY packages/app-static/components.json ./packages/app-static/components.json
+COPY packages/app-static/bun-env.d.ts ./packages/app-static/bun-env.d.ts
+COPY packages/app-static/styles ./packages/app-static/styles
+
+# Set working directory to app-static
+WORKDIR /app/packages/app-static
+
+# Expose server port
+EXPOSE 8081
+
+# Run dev server with hot reload
+CMD ["bun", "--hot", "src/index.ts"]
+

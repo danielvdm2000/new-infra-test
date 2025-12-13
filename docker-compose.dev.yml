@@ -3,8 +3,6 @@ services:
     image: mongo:7
     container_name: new-infra-test-mongodb-dev
     restart: unless-stopped
-    ports:
-      - "27017:27017"
     volumes:
       - mongodb-data-dev:/data/db
     networks:
@@ -40,39 +38,13 @@ services:
     networks:
       - app-network
 
-  app:
-    build:
-      context: .
-      dockerfile: ./packages/app/Dockerfile.dev
-    container_name: new-infra-test-app-dev
-    ports:
-      - "8080:8080"
-    volumes:
-      # Mount source code for hot-reload
-      - ./packages/app/src:/app/packages/app/src
-      - ./packages/app/package.json:/app/packages/app/package.json
-      - ./packages/app/tsconfig.json:/app/packages/app/tsconfig.json
-      - ./packages/app/build.ts:/app/packages/app/build.ts
-      - ./packages/app/bunfig.toml:/app/packages/app/bunfig.toml
-      - ./packages/app/components.json:/app/packages/app/components.json
-      # Mount root package.json for workspace configuration
-      - ./package.json:/app/package.json
-    environment:
-      - NODE_ENV=development
-      - PORT=8080
-      - API_URL=http://server:3001
-    depends_on:
-      - server
-    networks:
-      - app-network
-
   app-static:
     build:
       context: .
       dockerfile: ./packages/app-static/Dockerfile.dev
     container_name: new-infra-test-app-static-dev
     ports:
-      - "8081:8081"
+      - "8080:3000"
     volumes:
       # Mount source code for hot-reload
       - ./packages/app-static/src:/app/packages/app-static/src
@@ -85,7 +57,7 @@ services:
       - ./package.json:/app/package.json
     environment:
       - NODE_ENV=development
-      - PORT=8081
+      - PORT=3000
       - API_URL=http://server:3001
     depends_on:
       - server

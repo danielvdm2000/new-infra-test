@@ -25,7 +25,7 @@ COPY packages/app-static/styles ./packages/app-static/styles
 WORKDIR /app/packages/app-static
 
 # Expose server port
-EXPOSE 8081
+EXPOSE 3000
 
 # Run dev server with hot reload
 CMD ["bun", "--hot", "src/index.ts"]

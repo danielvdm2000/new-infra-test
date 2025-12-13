@@ -6,7 +6,7 @@ const API_URL = process.env.API_URL || "http://server:3001";
 
 // Development server: use Bun's HTML import feature with routes
 const server = serve({
-  port: process.env.PORT ? parseInt(process.env.PORT) : 8081,
+  port: process.env.PORT ? parseInt(process.env.PORT) : 3000,
   routes: {
     // API proxy routes - must come before the catch-all route
     "/api/count": {

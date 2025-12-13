@@ -3,8 +3,6 @@ services:
     image: mongo:7
     container_name: new-infra-test-mongodb-prod
     restart: unless-stopped
-    ports:
-      - "27017:27017"
     volumes:
       - mongodb-data:/data/db
     networks:
@@ -39,36 +37,13 @@ services:
       retries: 3
       start_period: 40s
 
-  app:
-    build:
-      context: .
-      dockerfile: ./packages/app/Dockerfile.prod
-    container_name: new-infra-test-app-prod
-    ports:
-      - "8080:8080"
-    restart: unless-stopped
-    environment:
-      - PORT=8080
-      - NODE_ENV=production
-      - API_URL=http://server:3001
-    depends_on:
-      - server
-    networks:
-      - app-network
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8080/ || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-
   app-static:
     build:
       context: .
       dockerfile: ./packages/app-static/Dockerfile.prod
     container_name: new-infra-test-app-static-prod
     ports:
-      - "8081:80"
+      - "8080:80"
     restart: unless-stopped
     environment:
       - PORT=80
